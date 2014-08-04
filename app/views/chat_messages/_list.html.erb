@@ -1,0 +1,57 @@
+<p>
+<% if  @chatmessages.length > 0  %>
+<table border="1">
+  <tr>
+    <th>From</th>
+    <th>Body</th>
+    <th>Question</th>
+    <th>Keywords</th>
+    <th>Tiempo</th>
+    <th>Comentario</th>
+			<% if [User::ADMIN, User::PROF].include? User.find(session[:userid]).useraccount_type   %>
+    <th>Borrar</th>
+			<% end %> 
+  </tr>
+
+
+<% @chatmessages.each  do |chat_message| %>
+	<% messagebody = chat_message.body.split(":",3)[2]  %>
+	<% ansIndex = chat_message.grouptest_chatmessages[0].qnumber  - 1  %>
+
+  <tr>
+    <td><%= chat_message.from.user.name %></td>
+    <td><%= messagebody %></td>
+		<td>
+			<%=  ansIndex %>
+		</td>
+
+		<td >
+			<%=  
+				SpellingCorrector.keywords(messagebody, @test.answers[ansIndex].question.keywords, session[:locale] ).join(" ") if @test.answers[ansIndex] 
+			%>
+		</td>
+    <td><%= chat_message.created_at.strftime(" %H:%M:%S") %></td>
+
+			<% if  User.find(session[:userid]).useraccount_type == User::ALU   %>
+			<td>
+				 <%= chat_message.grouptest_chatmessages[0].comment %>
+			</td>
+			<% else %>
+
+		<td>
+				<div id="changeCommentDiv<%= chat_message.grouptest_chatmessages[0].id  %>">
+					 <%= render :partial => 'grouptest_chatmessages/link', :locals => {:g => chat_message.grouptest_chatmessages[0]}  %>
+				</div>
+		</td>
+		<td>
+  		  <%= link_to t('delete'),chat_message.grouptest_chatmessages[0] , :confirm => 'Are you sure?', :method => :delete %>
+		</td>
+			<% end %> 
+
+  </tr>
+
+<% end %>
+</table>
+<% end %>
+</p>
+
