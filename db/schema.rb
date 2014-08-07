@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20121018000004) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "admins", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -20,9 +23,9 @@ ActiveRecord::Schema.define(version: 20121018000004) do
 
   create_table "alu_groups", force: true do |t|
     t.string   "name"
+    t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "course_id"
   end
 
   create_table "answers", force: true do |t|
@@ -32,9 +35,9 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.float    "pointsBefore"
     t.integer  "question_id"
     t.integer  "test_id"
+    t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "student_id"
   end
 
   create_table "chat_messages", force: true do |t|
@@ -42,17 +45,17 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.integer  "to_id"
     t.text     "body"
     t.integer  "msgtype"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "competence_groups", force: true do |t|
     t.string   "filename"
+    t.float    "points"
     t.integer  "competence_id"
     t.integer  "alu_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "points"
   end
 
   create_table "competence_nodes", force: true do |t|
@@ -64,14 +67,9 @@ ActiveRecord::Schema.define(version: 20121018000004) do
 
   create_table "competences", force: true do |t|
     t.string   "name"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description"
-  end
-
-  create_table "competences_works", id: false, force: true do |t|
-    t.integer "competence_id"
-    t.integer "work_id"
   end
 
   create_table "courses", force: true do |t|
@@ -81,7 +79,6 @@ ActiveRecord::Schema.define(version: 20121018000004) do
   end
 
   create_table "edges", id: false, force: true do |t|
-    t.integer  "id",         default: "nextval('edges_id_seq'::regclass)", null: false
     t.integer  "src_id"
     t.integer  "dest_id"
     t.float    "dep"
@@ -93,16 +90,16 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.integer  "test_id"
     t.integer  "chat_message_id"
     t.integer  "qnumber"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
     t.string   "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "grouptest_students", force: true do |t|
     t.integer  "test_id"
     t.integer  "student_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "node_question_relations", force: true do |t|
@@ -117,9 +114,9 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.text     "content"
     t.float    "minPassPoints"
     t.integer  "course_id"
+    t.integer  "teacher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "teacher_id"
   end
 
   create_table "question_responses", force: true do |t|
@@ -136,11 +133,11 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.float    "difficulty"
     t.float    "luck"
     t.string   "img"
+    t.string   "keywords"
     t.integer  "course_id"
+    t.integer  "teacher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "keywords"
-    t.integer  "teacher_id"
   end
 
   create_table "related_contents", force: true do |t|
@@ -155,8 +152,8 @@ ActiveRecord::Schema.define(version: 20121018000004) do
   create_table "session_chatmessages", force: true do |t|
     t.integer  "chat_message_id"
     t.string   "sessionid"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sessions", force: true do |t|
@@ -170,8 +167,8 @@ ActiveRecord::Schema.define(version: 20121018000004) do
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "student_alu_groups", force: true do |t|
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "alu_group_id"
     t.integer  "student_id"
   end
@@ -186,15 +183,14 @@ ActiveRecord::Schema.define(version: 20121018000004) do
   create_table "students", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "lastcheck"
   end
 
   create_table "teacher_assigns", force: true do |t|
     t.integer  "teacher_id"
     t.integer  "course_id"
+    t.boolean  "coordinator"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "coordinator"
   end
 
   create_table "teachers", force: true do |t|
@@ -228,18 +224,18 @@ ActiveRecord::Schema.define(version: 20121018000004) do
     t.integer  "qnumber"
     t.integer  "student_id"
     t.integer  "ntimes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "works", force: true do |t|
     t.integer  "node_id"
+    t.integer  "assignedto_id"
+    t.string   "assignedto_type"
     t.float    "initialpoints"
     t.integer  "worktype"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "assignedto_type"
-    t.integer  "assignedto_id"
   end
 
 end
