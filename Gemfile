@@ -18,7 +18,7 @@ gem 'wice_grid', :branch => 'rails4'
 #rails generate jquery:install
 gem 'jquery-rails'
 #for jquery-ui as later version of gem has deleted the ui part 
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 4.2.1'
 
 
 gem 'execjs'

@@ -10,9 +10,9 @@
 
 
 
-	DocumentRoot ~/Escritorio/Project/siena-csl-master/public
+	DocumentRoot /home/victor/Escritorio/Project/siena-csl-master/public/
 
-	<Directory /local/ruby/siena-csl/public/>
+	<Directory /home/victor/Escritorio/Project/siena-csl-master/public/>
 		Options Indexes ExecCGI FollowSymLinks
 		AllowOverride None
 		Order allow,deny
