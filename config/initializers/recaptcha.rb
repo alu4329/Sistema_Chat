@@ -1,2 +1,2 @@
-RCC_PUB='recaptcha public key' 
-RCC_PRIV='recaptcha private key'
+RCC_PUB='6Le5UPgSAAAAAErXdXn9poOK3Wd7KdIo158etjE9'
+RCC_PRIV='6Le5UPgSAAAAAPGxDmPd9jEISUJmqY8vavW39A_F'

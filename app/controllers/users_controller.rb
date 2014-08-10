@@ -113,7 +113,6 @@ class UsersController < ApplicationController
 						flash[:notice] = t('user_created_success')
 						saved = true
 						redirect_to :action => "getUserHome"
-						Notifier.user_created(@user.username).deliver
 					else
 						#IMPORTANT render before exception
 						render :action => 'new'
@@ -121,7 +120,6 @@ class UsersController < ApplicationController
 					end
 				end
 			end
-		Notifier.user_created(@user.username).deliver if saved
 		else
 			flash[:notice] = "Captcha not valid"
 			render :action => 'new'
